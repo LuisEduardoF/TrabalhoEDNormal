@@ -9,7 +9,7 @@ struct editor{
 };
 
 tEditor inicializaEditor(char* name){
-    tEditor new = malloc(sizeof(tEditor));
+    tEditor new = malloc(sizeof(struct editor));
     new->nome = strdup(name);
     return new;
 }

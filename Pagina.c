@@ -14,7 +14,7 @@ struct pagina{
 };
 
 tPagina inicializaPagina(char* name, char* file){
-    tPagina new = malloc(sizeof(tPagina));
+    tPagina new = malloc(sizeof(struct pagina));
     new->c = inicializaListaContribuicao();
     new->file = strdup(file);
     new->nome = strdup(name);
@@ -50,26 +50,34 @@ void addLinkPagina(tPagina secundaria, tPagina principal){
 }
 int removeLinkPagina(tPagina secundaria, tPagina principal){
     if(secundaria != NULL && principal != NULL){
-        if(removeLink(secundaria, principal->l) != NULL){
+        if(removeLink(secundaria, principal->l) != NULL)
             return 0;
-        }
-        else{
+        else
             return 1;
-        }
     }
+}
+int searchCaminhoLinks(tPagina Origem, tPagina Destino){
+    printf("Existe caminho entre %s para %s: %d\n", returnNomePagina(Origem), returnNomePagina(Destino), caminhoLink(Origem, Destino));
 }
 void printPagina(tPagina p){
     printf("Nome da Página: %s | Arquivo: %s\n", p->nome, p->file);
+    printf("--> Historico de contribuicoes\n");
+    printListaContribuicaoHistorico(p->c);
+    printf("--> Links\n");
+    printListaLink(p->l);
+    printf("--> Textos\n");
     printListaContribuicao(p->c);
-    //printListaLink(p->l);
 }
 char* returnNomePagina(tPagina p){
     return p->nome;
+}
+void* returnLinkPagina(tPagina p){
+    return p->l;
 }
 void freePagina(tPagina p){
     free(p->nome);
     free(p->file);
     freeListaContribuicao(p->c);
-    //freeListaLink(p->l);
+    freeListaLink(p->l);
     free(p);
 }

@@ -3,7 +3,7 @@
 #include <string.h>
 #include "Editor.h"
 #include "Contribuicao.h"
-
+#define MAX_TAM 200
 struct contribuicao{
     char* file;
     int retirada;
@@ -11,7 +11,7 @@ struct contribuicao{
 };
 
 tContribuicao inicializaContribuicao(tEditor editor, char* file){
-    tContribuicao new = malloc(sizeof(tContribuicao));
+    tContribuicao new = malloc(sizeof(struct contribuicao));
     new->editor = editor;
     new->retirada = 0;
     new->file = strdup(file);
@@ -27,11 +27,21 @@ char* autor(tContribuicao atual){
 char* returnNomeContribuicao(tContribuicao atual){
     return atual->file;
 }
-void printContribuicao(tContribuicao atual){
-    printf("Nome do Editor: %s\t|\tNome do arquivo de contribuicao: %s ", returnNomeEditor(atual->editor), atual->file);
+void printDadosContribuicao(tContribuicao atual){
+    printf("%s %s ", returnNomeEditor(atual->editor), atual->file);
     if(atual->retirada)
         printf("<<retirada>>");
     printf("\n");
+}
+void printContribuicao(tContribuicao atual){
+    printf("-------- %s (%s) --------\n", atual->file, autor(atual));
+    FILE* file = fopen(atual->file, "r");
+    char lixo;
+    while((lixo = fgetc(file)) != EOF){
+        printf("%c",lixo);
+    }
+    printf("\n");
+    fclose(file);
 }
 void freeContribuicao(tContribuicao atual){
     free(atual->file);

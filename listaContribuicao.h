@@ -9,6 +9,7 @@ void addContribuicao(tEditor e, char* file, tListaContribuicao Lc);
 tContribuicao searchContribuicao(char* file,  tListaContribuicao Lc);
 tContribuicao removeContribuicaoEditor(char* EditorName,  tListaContribuicao Lc);
 tContribuicao removeContribuicao(char* file, tListaContribuicao Lc);
+void printListaContribuicaoHistorico(tListaContribuicao Lc);
 void printListaContribuicao(tListaContribuicao Lc);
 void freeListaContribuicao(tListaContribuicao Lc);
 #endif

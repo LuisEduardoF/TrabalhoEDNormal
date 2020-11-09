@@ -9,7 +9,7 @@ struct wikiED{
 };
 
 tWikiED inicializaWiked(){
-    tWikiED new = malloc(sizeof(tWikiED));
+    tWikiED new = malloc(sizeof(struct wikiED));
     new->p =  inicializaListaPagina();
     new->e = inicializaListaEditor();
 
@@ -20,6 +20,10 @@ void inserePagina(char* nome, char* file, tWikiED w){
 }
 void retiraPagina(char* namePag, tWikiED w){
     tPagina Pagina = removePagina(namePag, w->p);
+    if(Pagina != NULL){
+        removeAllLinkPag(Pagina, w->p); 
+        freePagina(Pagina);
+    }
 }
 void insereEditor(char* nome, tWikiED w){
     addEditor(nome, w->e);
@@ -28,8 +32,8 @@ void retiraEditor(char* nameEdt, tWikiED w){
     tEditor Editor = removeEditor(nameEdt, w->e);
     if(Editor != NULL){
         removeAllContribuicoesEditor(nameEdt, w->p);
-    }
-    freeEditor(Editor);
+        freeEditor(Editor);
+    }  
 }
 void insereContribuicao(char* namePag, char* nameEdt, char* file, tWikiED w){
     tPagina Pagina = searchPagina(namePag, w->p);
@@ -56,19 +60,30 @@ void retiraContribuicao(char* namePag, char* nameEdt, char* file, tWikiED w){
 }
 void insereLink(char* namePag1, char* namePag2, tWikiED w){
     tPagina Principal = searchPagina(namePag1, w->p), Secundaria = searchPagina(namePag2, w->p);
-    printf("Entrei aqui");
     if(Principal != NULL && Secundaria != NULL){
         addLinkPagina(Secundaria, Principal);
     }
 }
-void retiraLink(char* namePag1, char* namePag2, tWikiED);
-int caminho(char* namePag1, char* namePag2, tWikiED);
+void retiraLink(char* namePag1, char* namePag2, tWikiED w){
+    tPagina Principal = searchPagina(namePag1, w->p), Secundaria = searchPagina(namePag2, w->p);
+    if(Principal != NULL && Secundaria != NULL){
+        removeLinkPagina(Secundaria, Principal);
+    }
+}
+int caminho(char* namePag1, char* namePag2, tWikiED w){
+    tPagina Origem = searchPagina(namePag1, w->p), Destino = searchPagina(namePag2, w->p);
+    if(Origem != NULL && Destino != NULL){
+        caminhoExiste(Origem, Destino);
+    }
+}
 void imprimePagina(char* namePag1, tWikiED w){
-
+    tPagina Pagina = searchPagina(namePag1, w->p);
+    if(Pagina != NULL){
+        printPagina(Pagina);
+    }
 }
 void imprimeWiki(tWikiED w){
     printListaPagina(w->p);
-    printListaEditor(w->e);
 }
 void freeWiki(tWikiED w){
     freeListaPagina(w->p);

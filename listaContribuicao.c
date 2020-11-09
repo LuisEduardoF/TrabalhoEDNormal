@@ -8,7 +8,7 @@ typedef struct node{
     struct node *prox;
 }*tNode;
 tNode inicializaNodeContribuicao(tEditor editor, char* file){
-    tNode new = malloc(sizeof(tNode));
+    tNode new = malloc(sizeof(struct node));
     new->c = inicializaContribuicao(editor, file);
     new->prox = NULL;
 
@@ -28,7 +28,7 @@ int ExistC(tListaContribuicao c){
     return c != NULL;
 }
 tListaContribuicao inicializaListaContribuicao(){
-    tListaContribuicao new = malloc(sizeof(tListaContribuicao));
+    tListaContribuicao new = malloc(sizeof(struct listacontribuicao));
     new->fst = new->end = NULL;
     return new;
 }
@@ -81,10 +81,14 @@ tContribuicao removeContribuicaoEditor(char* EditorName,  tListaContribuicao Lc)
                 return NULL;
             }
             if(p == Lc->fst && p == Lc->end){
-                Lc->fst = Lc->end;
+                Lc->fst = Lc->end = NULL;
             }
             else if(p == Lc->fst){
                 Lc->fst = Lc->fst->prox;
+            }
+            else if(p == Lc->end){
+                Lc->end = ant;
+                Lc->end->prox = NULL;
             }
             else{
                 ant->prox = p->prox;
@@ -112,12 +116,21 @@ tContribuicao removeContribuicao(char* file, tListaContribuicao Lc){
         }
     }
 }
+void printListaContribuicaoHistorico(tListaContribuicao Lc){
+    if(ExistC(Lc)){
+        if(!isEmptyC(Lc)){
+            for(tNode p = Lc->fst; p != NULL; p = p->prox){
+                printDadosContribuicao(p->c);
+            }
+        }
+    }
+}
 void printListaContribuicao(tListaContribuicao Lc){
     if(ExistC(Lc)){
         if(!isEmptyC(Lc)){
             for(tNode p = Lc->fst; p != NULL; p = p->prox){
                 printContribuicao(p->c);
-            }   
+            }
         }
     }
 }

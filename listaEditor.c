@@ -8,7 +8,7 @@ typedef struct node{
     struct node *prox;
 }*tNode;
 tNode inicializaNodeEditor(char* nome){
-    tNode new = malloc(sizeof(tNode));
+    tNode new = malloc(sizeof(struct node));
     new->e = inicializaEditor(nome);
     new->prox = NULL;
     return new;
@@ -27,7 +27,7 @@ int ExistE(tListaEditor e){
     return e != NULL;
 }
 tListaEditor inicializaListaEditor(){
-    tListaEditor new = malloc(sizeof(tListaEditor));
+    tListaEditor new = malloc(sizeof(struct listaeditor));
     new->fst = new->end = NULL;
     return new;
 }
@@ -50,10 +50,14 @@ tEditor removeEditor(char* name, tListaEditor Le){
                 return NULL;
             }
             if(p == Le->fst && p == Le->end){
-                Le->fst = Le->end;
+                Le->fst = Le->end = NULL;
             }
             else if(p == Le->fst){
                 Le->fst = Le->fst->prox;
+            }
+            else if(p == Le->end){
+                Le->end = ant;
+                Le->end->prox = NULL;
             }
             else{
                 ant->prox = p->prox;

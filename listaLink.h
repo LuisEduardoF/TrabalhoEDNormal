@@ -7,6 +7,7 @@ tListaLink inicializaListaLink();
 void addLink(tPagina Pagina, tListaLink Ll);
 tPagina removeLink(tPagina Pagina, tListaLink Lpl);
 tPagina searchLink(tPagina Pagina, tListaLink Ll);
+int caminhoLink(tPagina Origem, tPagina Destino);
 void printListaLink(tListaLink Ll);
 void freeListaLink(tListaLink Ll);
 

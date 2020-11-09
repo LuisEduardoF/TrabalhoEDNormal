@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "wikiED.h"
+//Preciso retirar a página de todos os links, e fazer o caminho...
 #define TAM_MAX 200
 void readInput(char* entrada, tWikiED wiked){
 
@@ -40,15 +41,17 @@ void readInput(char* entrada, tWikiED wiked){
         else if(!strcmp(opCode,"INSERELINK")){
             char PaginaPrincipal[TAM_MAX], PaginaSecundaria[TAM_MAX];
             fscanf(file, "%s %s%*c", PaginaPrincipal, PaginaSecundaria);
-            //insereLink(PaginaPrincipal, PaginaSecundaria, wiked);
+            insereLink(PaginaPrincipal, PaginaSecundaria, wiked);
         }
         else if(!strcmp(opCode,"RETIRALINK")){
             char PaginaPrincipal[TAM_MAX], PaginaSecundaria[TAM_MAX];
             fscanf(file, "%s %s%*c", PaginaPrincipal, PaginaSecundaria);
+            retiraLink(PaginaPrincipal, PaginaSecundaria, wiked);
         }
         else if(!strcmp(opCode,"CAMINHO")){
             char PaginaInicial[TAM_MAX], PaginaFinal[TAM_MAX];
             fscanf(file, "%s %s%*c", PaginaInicial, PaginaFinal);
+            caminho(PaginaInicial, PaginaFinal, wiked);
         }
         else if(!strcmp(opCode,"IMPRIMEPAGINA")){
             char PaginaNome[TAM_MAX];
@@ -70,7 +73,7 @@ int main(int argc, char* argv[]){
     readInput(argv[1], wiked);
     /*
     inserePagina("Fisica", "fisica.txt", wiked);  inserePagina("Artes", "artes.txt", wiked); inserePagina("UFES", "ufes.txt", wiked);
-    //retiraPagina("Psicologia", wiked);
+    retiraPagina("Psicologia", wiked);
     insereEditor("Pedro", wiked);
     insereEditor("Maria", wiked);
     insereEditor("Joao", wiked);
@@ -85,6 +88,7 @@ int main(int argc, char* argv[]){
     insereContribuicao("Artes", "Ana", "c5.txt", wiked);
     retiraContribuicao("Artes", "Ana", "c5.txt", wiked);
     retiraEditor("Maria", wiked);
+    retiraPagina("Fisica", wiked);
     imprimeWiki(wiked);
     freeWiki(wiked);
     */

@@ -7,7 +7,7 @@ typedef struct node{
     struct node *prox;
 }*tNode;
 tNode inicializaNodePagina(char* nome, char* file){
-    tNode new = malloc(sizeof(tNode));
+    tNode new = malloc(sizeof(struct node));
     new->p = inicializaPagina(nome, file);
     new->prox = NULL;
     return new;
@@ -26,12 +26,12 @@ int ExistP(tListaPagina p){
     return p != NULL;
 }
 tListaPagina inicializaListaPagina(){
-    tListaPagina new = malloc(sizeof(tListaPagina));
+    tListaPagina new = malloc(sizeof(struct listapagina));
     new->fst = new->end = NULL;
     return new;
 }
-tPagina removePagina(char* namePagina, tListaPagina Lp){
-    if(ExistP(Lp)){
+tPagina removePagina(char* name, tListaPagina Lp){
+     if(ExistP(Lp)){
         if(isEmptyP(Lp)){
             printf("Lista Vazia... Retornando NULL\n");
             return NULL;
@@ -40,7 +40,7 @@ tPagina removePagina(char* namePagina, tListaPagina Lp){
             tNode p = Lp->fst, ant = NULL;
             tPagina aux;
             for(p = Lp->fst; p != NULL; p = p->prox){
-                if(!strcmp(returnNomePagina(p->p), namePagina)){
+                if(!strcmp(returnNomePagina(p->p), name)){
                     break;
                 }
                 ant = p;
@@ -49,10 +49,14 @@ tPagina removePagina(char* namePagina, tListaPagina Lp){
                 return NULL;
             }
             if(p == Lp->fst && p == Lp->end){
-                Lp->fst = Lp->end;
+                Lp->fst = Lp->end = NULL;
             }
             else if(p == Lp->fst){
                 Lp->fst = Lp->fst->prox;
+            }
+            else if(p == Lp->end){
+                Lp->end = ant;
+                Lp->end->prox = NULL;
             }
             else{
                 ant->prox = p->prox;
@@ -95,6 +99,9 @@ tPagina searchPagina(char* name, tListaPagina Lp){
             return NULL;
         }
     }
+}
+int caminhoExiste(tPagina Origem, tPagina Destino){
+    searchCaminhoLinks(Origem, Destino);
 }
 void addPagina(char* name, char* file, tListaPagina Lp){
     if(ExistP(Lp)){
