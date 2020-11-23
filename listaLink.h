@@ -8,7 +8,7 @@ void addLink(tPagina Pagina, tListaLink Ll);
 tPagina removeLink(tPagina Pagina, tListaLink Lpl);
 tPagina searchLink(tPagina Pagina, tListaLink Ll);
 int caminhoLink(tPagina Origem, tPagina Destino);
-void printListaLink(tListaLink Ll);
+void printListaLink(tListaLink Ll, FILE* pagFile);
 void freeListaLink(tListaLink Ll);
 
 #endif

@@ -34,7 +34,6 @@ tListaEditor inicializaListaEditor(){
 tEditor removeEditor(char* name, tListaEditor Le){
      if(ExistE(Le)){
         if(isEmptyE(Le)){
-            printf("Lista Vazia... Retornando NULL\n");
             return NULL;
         }
         else{
@@ -71,7 +70,6 @@ tEditor removeEditor(char* name, tListaEditor Le){
 tEditor searchEditor(char* name, tListaEditor Le){
     if(ExistE(Le)){
         if(isEmptyE(Le)){
-            printf("Lista Vazia... Retornando NULL\n");
             return NULL;
         }
         else{

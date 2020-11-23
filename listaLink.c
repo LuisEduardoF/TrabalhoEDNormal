@@ -43,7 +43,6 @@ void addLink(tPagina Pagina, tListaLink Ll){
 tPagina removeLink(tPagina Pagina, tListaLink Ll){
     if(ExistL(Ll)){
         if(isEmptyL(Ll)){
-            printf("Lista Vazia... Retornando NULL\n");
             return NULL;
         }
         else{
@@ -80,7 +79,6 @@ tPagina removeLink(tPagina Pagina, tListaLink Ll){
 tPagina searchLink(tPagina Pag, tListaLink Ll){
     if(ExistL(Ll)){
         if(isEmptyL(Ll)){
-            printf("Lista Vazia... Retornando NULL\n");
             return NULL;
         }
         else{
@@ -95,7 +93,6 @@ tPagina searchLink(tPagina Pag, tListaLink Ll){
     }
 }
 int caminhoUTIL(tPagina Origem, tPagina Destino, tListaLink linkAux){
-    printf("Pagina origem: %s\n", returnNomePagina(Origem));
     //Verifica se A página já foi visitada
     if(searchLink(Origem, linkAux) != NULL){
         return 0;
@@ -127,13 +124,13 @@ int caminhoLink(tPagina Origem, tPagina Destino){
 
     return ExisteCaminho;
 }
-void printListaLink(tListaLink Ll){
+void printListaLink(tListaLink Ll, FILE* pagFile){
     if(ExistL(Ll)){
         if(!isEmptyL(Ll)){
             for(tLinkNode p = Ll->fst; p != NULL; p = p->prox){
-                printf("%s ", returnNomePagina(p->pag));
+                fprintf(pagFile, "%s %s\n", returnNomePagina(p->pag), returnFilePagina(p->pag));
             }
-            printf("\n");
+            fprintf(pagFile, "\n");
         }
     }
 }

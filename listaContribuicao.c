@@ -48,7 +48,6 @@ void addContribuicao(tEditor editor, char* file, tListaContribuicao Lc){
 tContribuicao searchContribuicao(char* file,  tListaContribuicao Lc){
     if(ExistC(Lc)){
         if(isEmptyC(Lc)){
-            printf("Lista Vazia... Retornando NULL\n");
             return NULL;
         }
         else{
@@ -65,7 +64,6 @@ tContribuicao searchContribuicao(char* file,  tListaContribuicao Lc){
 tContribuicao removeContribuicaoEditor(char* EditorName,  tListaContribuicao Lc){
     if(ExistC(Lc)){
         if(isEmptyC(Lc)){
-            printf("Lista Vazia... Retornando NULL\n");
             return NULL;
         }
         else{
@@ -102,7 +100,6 @@ tContribuicao removeContribuicaoEditor(char* EditorName,  tListaContribuicao Lc)
 tContribuicao removeContribuicao(char* file, tListaContribuicao Lc){
     if(ExistC(Lc)){
         if(isEmptyC(Lc)){
-            printf("Lista Vazia... Retornando NULL\n");
             return NULL;
         }
         else{
@@ -116,20 +113,20 @@ tContribuicao removeContribuicao(char* file, tListaContribuicao Lc){
         }
     }
 }
-void printListaContribuicaoHistorico(tListaContribuicao Lc){
+void printListaContribuicaoHistorico(tListaContribuicao Lc, FILE* pagFile){
     if(ExistC(Lc)){
         if(!isEmptyC(Lc)){
             for(tNode p = Lc->fst; p != NULL; p = p->prox){
-                printDadosContribuicao(p->c);
+                printDadosContribuicao(p->c, pagFile);
             }
         }
     }
 }
-void printListaContribuicao(tListaContribuicao Lc){
+void printListaContribuicao(tListaContribuicao Lc, FILE* pagFile){
     if(ExistC(Lc)){
         if(!isEmptyC(Lc)){
             for(tNode p = Lc->fst; p != NULL; p = p->prox){
-                printContribuicao(p->c);
+                printContribuicao(p->c, pagFile);
             }
         }
     }

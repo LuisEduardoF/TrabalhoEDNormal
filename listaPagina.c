@@ -33,7 +33,6 @@ tListaPagina inicializaListaPagina(){
 tPagina removePagina(char* name, tListaPagina Lp){
      if(ExistP(Lp)){
         if(isEmptyP(Lp)){
-            printf("Lista Vazia... Retornando NULL\n");
             return NULL;
         }
         else{
@@ -70,7 +69,7 @@ tPagina removePagina(char* name, tListaPagina Lp){
 void removeAllLinkPag(tPagina Pagina, tListaPagina Lp){
     for(tNode p = Lp->fst; p != NULL; p = p->prox){
         while(1){
-            if(removeLinkPagina(Pagina, p->p))
+            if(excludeLinkPagina(Pagina, p->p) == NULL)
                 break;
         }
     }
@@ -78,7 +77,7 @@ void removeAllLinkPag(tPagina Pagina, tListaPagina Lp){
 void removeAllContribuicoesEditor(char* nameEditor, tListaPagina Lp){
     for(tNode p = Lp->fst; p != NULL; p = p->prox){
         while(1){
-            if(removeContribuicoesEditorPagina(nameEditor, p->p))
+            if(excludeContribuicoesEditorPagina(nameEditor, p->p))
                 break;
         }
     }
@@ -86,7 +85,6 @@ void removeAllContribuicoesEditor(char* nameEditor, tListaPagina Lp){
 tPagina searchPagina(char* name, tListaPagina Lp){
     if(ExistP(Lp)){
         if(isEmptyP(Lp)){
-            printf("Lista Vazia... Retornando NULL\n");
             return NULL;
         }
         else{

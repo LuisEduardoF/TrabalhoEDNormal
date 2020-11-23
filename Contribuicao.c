@@ -27,21 +27,23 @@ char* autor(tContribuicao atual){
 char* returnNomeContribuicao(tContribuicao atual){
     return atual->file;
 }
-void printDadosContribuicao(tContribuicao atual){
-    printf("%s %s ", returnNomeEditor(atual->editor), atual->file);
+void printDadosContribuicao(tContribuicao atual, FILE* pagFile){
+    fprintf(pagFile, "%s %s ", returnNomeEditor(atual->editor), atual->file);
     if(atual->retirada)
-        printf("<<retirada>>");
-    printf("\n");
+        fprintf(pagFile, "<<retirada>>");
+    fprintf(pagFile, "\n");
 }
-void printContribuicao(tContribuicao atual){
-    printf("-------- %s (%s) --------\n", atual->file, autor(atual));
-    FILE* file = fopen(atual->file, "r");
-    char lixo;
-    while((lixo = fgetc(file)) != EOF){
-        printf("%c",lixo);
+void printContribuicao(tContribuicao atual, FILE* pagFile){
+    if(atual->retirada == 0){
+        fprintf(pagFile, "-------- %s (%s) --------\n", atual->file, autor(atual));
+        FILE* file = fopen(atual->file, "r");
+        char lixo;
+        while((lixo = fgetc(file)) != EOF){
+            fprintf(pagFile,"%c", lixo);
+        }
+        fprintf(pagFile, "\n");
+        fclose(file);
     }
-    printf("\n");
-    fclose(file);
 }
 void freeContribuicao(tContribuicao atual){
     free(atual->file);

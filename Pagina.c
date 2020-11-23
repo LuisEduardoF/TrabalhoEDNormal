@@ -4,13 +4,12 @@
 #include "listaPagina.h"
 #include "listaContribuicao.h"
 #include "listaLink.h"
+#include "ExceptionHandler.h"
 
 struct pagina{
-    
-    tListaLink l;
-    char *nome, *file;
+    tListaLink l; 
     tListaContribuicao c;
-    
+    char *nome, *file;  
 };
 
 tPagina inicializaPagina(char* name, char* file){
@@ -22,18 +21,33 @@ tPagina inicializaPagina(char* name, char* file){
 
     return new;
 }
-void addContribuicaoPagina(void* Editor, char* ContribuicaoFile, tPagina atual){
-    addContribuicao(Editor, ContribuicaoFile, atual->c);
+void addContribuicaoPagina(void* Editor, char* ContribuicaoFile, tPagina atual, FILE* log){
+    tContribuicao Contrib = searchContribuicao(ContribuicaoFile, atual->c);
+    if(Contrib == NULL)
+        addContribuicao(Editor, ContribuicaoFile, atual->c);
+    else{
+        err_C2(ContribuicaoFile, atual->nome, log);
+        fprintf(log, "Source: INSERECONTRIBUICAO %s %s %s\n\n", atual->nome, returnNomeEditor(Editor), ContribuicaoFile);
+    }
+    
 }
-void retiraContribuicaoPagina(void* Editor, char* ContribuicaoFile, tPagina atual){
+void retiraContribuicaoPagina(void* Editor, char* ContribuicaoFile, tPagina atual, FILE* log){
     tContribuicao Contribuicao = searchContribuicao(ContribuicaoFile, atual->c);
     if(Contribuicao != NULL){
         if(!strcmp(autor(Contribuicao), returnNomeEditor(Editor))){
             retirarContribuicao(Contribuicao);
         }
+        else{
+            err_C3(returnNomeEditor(Editor), ContribuicaoFile, autor(Contribuicao), log);
+            fprintf(log, "Source: RETIRACONTRIBUICAO %s %s %s\n\n", atual->nome, returnNomeEditor(Editor), ContribuicaoFile);
+        }
+    }
+    else{
+        err_C1(ContribuicaoFile, atual->nome, log);
+        fprintf(log, "Source: RETIRACONTRIBUICAO %s %s %s\n\n", atual->nome, returnNomeEditor(Editor), ContribuicaoFile);
     }
 }
-int removeContribuicoesEditorPagina(char* Editor, tPagina atual){
+int excludeContribuicoesEditorPagina(char* Editor, tPagina atual){
     tContribuicao Contribuicao = removeContribuicaoEditor(Editor, atual->c);
     if(Contribuicao != NULL){
         freeContribuicao(Contribuicao);
@@ -43,33 +57,56 @@ int removeContribuicoesEditorPagina(char* Editor, tPagina atual){
         return 1;
     }
 }
-void addLinkPagina(tPagina secundaria, tPagina principal){
-    if(secundaria != NULL && principal != NULL){
+void addLinkPagina(tPagina secundaria, tPagina principal, FILE* log){
+    tPagina PaginaLink = searchLink(secundaria, principal->l);
+
+    if(PaginaLink == NULL){
         addLink(secundaria, principal->l);
     }
+    else{
+        err_L2(PaginaLink->nome, principal->nome, log);
+        fprintf(log, "Source: INSERELINK %s %s\n\n", principal->nome, secundaria->nome);
+    }
 }
-int removeLinkPagina(tPagina secundaria, tPagina principal){
+tPagina excludeLinkPagina(tPagina secundaria, tPagina principal){
     if(secundaria != NULL && principal != NULL){
-        if(removeLink(secundaria, principal->l) != NULL)
-            return 0;
-        else
-            return 1;
+        return removeLink(secundaria, principal->l);
+    }
+}
+void removeLinkPagina(tPagina secundaria, tPagina principal, FILE* log){
+    tPagina PaginaLink = searchLink(secundaria, principal->l);
+    if(PaginaLink != NULL){
+        removeLink(secundaria, principal->l);
+    }
+    else{
+        err_L1(secundaria->nome, principal->nome, log);
+        fprintf(log, "Source: RETIRACONTRIBUICAO %s %s\n\n", principal->nome, secundaria->nome);
     }
 }
 int searchCaminhoLinks(tPagina Origem, tPagina Destino){
-    printf("Existe caminho entre %s para %s: %d\n", returnNomePagina(Origem), returnNomePagina(Destino), caminhoLink(Origem, Destino));
+    return caminhoLink(Origem, Destino);
 }
 void printPagina(tPagina p){
-    printf("Nome da Página: %s | Arquivo: %s\n", p->nome, p->file);
-    printf("--> Historico de contribuicoes\n");
-    printListaContribuicaoHistorico(p->c);
-    printf("--> Links\n");
-    printListaLink(p->l);
-    printf("--> Textos\n");
-    printListaContribuicao(p->c);
+    FILE* pagFile = fopen(p->file, "w");
+
+    fprintf(pagFile, "Nome da Página: %s | Arquivo: %s\n", p->nome, p->file);
+
+    fprintf(pagFile, "--> Historico de contribuicoes\n");
+    printListaContribuicaoHistorico(p->c, pagFile);
+
+    fprintf(pagFile, "--> Links\n");
+    printListaLink(p->l, pagFile);
+
+    fprintf(pagFile, "--> Textos\n");
+    printListaContribuicao(p->c, pagFile);
+
+    fclose(pagFile);
 }
 char* returnNomePagina(tPagina p){
     return p->nome;
+}
+char* returnFilePagina(tPagina p){
+    return p->file;
 }
 void* returnLinkPagina(tPagina p){
     return p->l;

@@ -4,11 +4,11 @@
 typedef struct contribuicao *tContribuicao;
 
 tContribuicao inicializaContribuicao(tEditor editor, char* file);
-char* autor(tContribuicao);
 void retirarContribuicao(tContribuicao atual);
 char* returnNomeContribuicao(tContribuicao atual);
-void printDadosContribuicao(tContribuicao);
-void printContribuicao(tContribuicao);
+void printDadosContribuicao(tContribuicao, FILE* pagFile);
+void printContribuicao(tContribuicao, FILE* pagFile);
+char* autor(tContribuicao);
 void freeContribuicao(tContribuicao);
 
 #endif

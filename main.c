@@ -7,7 +7,7 @@ void readInput(char* entrada, tWikiED wiked){
 
     FILE* file = fopen(entrada, "r");
     char opCode[TAM_MAX];
-    while(fscanf(file, "%s", opCode) == 1){
+    while(fscanf(file, "%s%*c", opCode) == 1){
         if(!strcmp(opCode,"INSEREPAGINA")){
             char PaginaNome[TAM_MAX], PaginaFile[TAM_MAX];
             fscanf(file, "%s %s%*c", PaginaNome, PaginaFile);
@@ -71,26 +71,5 @@ void readInput(char* entrada, tWikiED wiked){
 int main(int argc, char* argv[]){
     tWikiED wiked = inicializaWiked();
     readInput(argv[1], wiked);
-    /*
-    inserePagina("Fisica", "fisica.txt", wiked);  inserePagina("Artes", "artes.txt", wiked); inserePagina("UFES", "ufes.txt", wiked);
-    retiraPagina("Psicologia", wiked);
-    insereEditor("Pedro", wiked);
-    insereEditor("Maria", wiked);
-    insereEditor("Joao", wiked);
-    insereEditor("Ana", wiked);
-    insereEditor("Edu", wiked);
-    retiraEditor("Edu", wiked);
-
-    insereContribuicao("Fisica", "Pedro", "c1.txt", wiked);
-    insereContribuicao("Fisica", "Maria", "c2.txt", wiked);
-    insereContribuicao("Fisica", "Pedro", "c3.txt", wiked);
-    insereContribuicao("Artes", "Maria", "c4.txt", wiked);
-    insereContribuicao("Artes", "Ana", "c5.txt", wiked);
-    retiraContribuicao("Artes", "Ana", "c5.txt", wiked);
-    retiraEditor("Maria", wiked);
-    retiraPagina("Fisica", wiked);
-    imprimeWiki(wiked);
-    freeWiki(wiked);
-    */
     return 0;
 }
